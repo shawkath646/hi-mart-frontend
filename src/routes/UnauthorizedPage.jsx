@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 
-export default function NotFoundPage() {
+export default function UnauthorizedPage() {
   return (
     <main className="flex flex-col items-center justify-center min-h-screen bg-gray-100 dark:bg-gray-900 text-center p-6 transition-colors duration-300">
       <motion.h1
@@ -9,7 +9,7 @@ export default function NotFoundPage() {
         transition={{ duration: 0.5 }}
         className="text-6xl font-bold text-gray-900 dark:text-white"
       >
-        404
+        401
       </motion.h1>
       <motion.p
         initial={{ opacity: 0, y: 20 }}
@@ -17,7 +17,7 @@ export default function NotFoundPage() {
         transition={{ duration: 0.5, delay: 0.2 }}
         className="text-xl text-gray-600 dark:text-gray-300 mt-2"
       >
-        Oops! The page you're looking for doesn't exist.
+        You don't have permission to view this page.
       </motion.p>
       <motion.div
         initial={{ opacity: 0, y: 20 }}

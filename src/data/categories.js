@@ -1,0 +1,27 @@
+const categories = [
+  { categoryId: 0, name: "Uncategorized", color: "bg-gray-600 dark:bg-gray-700" },
+  { categoryId: 1, name: "Electronics", color: "bg-blue-500 dark:bg-blue-700" },
+  { categoryId: 19, name: "Mobile Phones", color: "bg-cyan-500 dark:bg-cyan-700" },
+  { categoryId: 20, name: "Laptops", color: "bg-sky-500 dark:bg-sky-700" },
+  { categoryId: 21, name: "Desktop Computers", color: "bg-indigo-600 dark:bg-indigo-800" },
+  { categoryId: 22, name: "Computer Accessories", color: "bg-blue-600 dark:bg-blue-800" },
+  { categoryId: 2, name: "Fashion", color: "bg-pink-500 dark:bg-pink-700" },
+  { categoryId: 3, name: "Home & Living", color: "bg-green-500 dark:bg-green-700" },
+  { categoryId: 4, name: "Beauty", color: "bg-purple-500 dark:bg-purple-700" },
+  { categoryId: 5, name: "Sports", color: "bg-orange-500 dark:bg-orange-700" },
+  { categoryId: 6, name: "Toys", color: "bg-yellow-500 dark:bg-yellow-700" },
+  { categoryId: 7, name: "Books", color: "bg-indigo-500 dark:bg-indigo-700" },
+  { categoryId: 8, name: "Automotive", color: "bg-red-600 dark:bg-red-800" },
+  { categoryId: 9, name: "Groceries", color: "bg-lime-500 dark:bg-lime-700" },
+  { categoryId: 10, name: "Health", color: "bg-teal-500 dark:bg-teal-700" },
+  { categoryId: 11, name: "Jewelry", color: "bg-rose-500 dark:bg-rose-700" },
+  { categoryId: 12, name: "Watches", color: "bg-amber-600 dark:bg-amber-800" },
+  { categoryId: 13, name: "Pet Supplies", color: "bg-emerald-500 dark:bg-emerald-700" },
+  { categoryId: 14, name: "Garden & Outdoors", color: "bg-cyan-600 dark:bg-cyan-800" },
+  { categoryId: 15, name: "Office Supplies", color: "bg-slate-500 dark:bg-slate-700" },
+  { categoryId: 16, name: "Gaming", color: "bg-fuchsia-500 dark:bg-fuchsia-700" },
+  { categoryId: 17, name: "Music", color: "bg-violet-500 dark:bg-violet-700" },
+  { categoryId: 18, name: "Footwear", color: "bg-orange-600 dark:bg-orange-800" },
+];
+
+export default categories;

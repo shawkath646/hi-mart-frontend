@@ -1,4 +1,7 @@
 @import "tailwindcss";
+@plugin  "tailwind-scrollbar-hide";
+
+@custom-variant dark (&:where(.dark, .dark *));
 
 body {
     font-family: "Poppins", sans-serif;
