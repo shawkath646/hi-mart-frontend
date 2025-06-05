@@ -3,7 +3,6 @@ import { useLocation, useNavigate, Outlet } from "react-router";
 import { useAuth } from "./contexts/useAuth";
 import { ToastContainer } from "react-toastify";
 import axios from "axios";
-import { MotionConfig } from "framer-motion";
 import RegularNavbar from "./components/navigation/RegularNavbar";
 import DashboardNavbar from "./components/navigation/DashboardNavbar";
 import RegularFooter from "./components/navigation/RegularFooter";
@@ -68,10 +67,7 @@ export default function Layout() {
   if (loading) return <LoadingPage />;
 
   return (
-    <MotionConfig
-      reducedMotion="always"
-      transition={{ duration: 0 }}
-    >
+    <>
       {isRegularRoute && <RegularNavbar />}
       {isSellerRoute && <DashboardNavbar />}
       <Outlet />
@@ -88,6 +84,6 @@ export default function Layout() {
         stacked
         newestOnTop
       />
-    </MotionConfig>
+    </>
   );
 }
