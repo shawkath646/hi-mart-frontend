@@ -227,7 +227,7 @@ const SignInPage = () => {
               {/* Social Buttons */}
               <div className="grid grid-cols-2 gap-4">
                 <SocialButton provider="Google" Icon={FaGoogle} color="text-red-500 dark:text-red-400" />
-                <SocialButton provider="Facebook" Icon={FaFacebook} color="text-blue-500 dark:text-blue-400" />
+                {/* <SocialButton provider="Facebook" Icon={FaFacebook} color="text-blue-500 dark:text-blue-400" /> */}
               </div>
 
               {/* Sign Up Link */}

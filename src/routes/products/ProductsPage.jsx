@@ -233,12 +233,13 @@ export default function ProductsPage() {
                   <div className="p-5 text-center">
                     <h3 className="text-xl font-semibold mb-2 dark:text-white">{category.name}</h3>
                     <div className="text-gray-500 dark:text-gray-400 text-sm mb-4">{category.count}</div>
-                    <a
-                      href={`/categories/${category.name.toLowerCase().replace(/&/g, 'and').replace(/\s+/g, '-')}`}
-                      className="inline-block bg-blue-600 dark:bg-blue-700 text-white px-6 py-2 rounded-md hover:bg-blue-700 dark:hover:bg-blue-800 transition-colors duration-300"
+                    <button
+                      disabled
+                      className="inline-block bg-gray-400 text-white px-6 py-2 rounded-md cursor-not-allowed opacity-60"
                     >
                       View All
-                    </a>
+                    </button>
+
                   </div>
                 </div>
               ))}
@@ -256,15 +257,15 @@ export default function ProductsPage() {
                   key={index}
                   className="bg-white dark:bg-gray-700 p-4 rounded shadow-sm hover:shadow-md dark:hover:shadow-gray-600 transition-all duration-300 hover:-translate-y-1"
                 >
-                  <a
-                    href={`/categories/${subcategory.name.toLowerCase().replace(/&/g, 'and').replace(/\s+/g, '-')}`}
-                    className="flex items-center"
+                  <button
+                    disabled
+                    className="flex items-center text-left disabled:cursor-not-allowed disabled:opacity-60"
                   >
                     <div className="w-10 h-10 bg-blue-50 dark:bg-blue-900/30 rounded-full flex items-center justify-center mr-3">
                       {subcategory.icon}
                     </div>
                     <div className="font-medium dark:text-white">{subcategory.name}</div>
-                  </a>
+                  </button>
                 </div>
               ))}
             </div>

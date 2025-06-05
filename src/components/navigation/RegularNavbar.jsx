@@ -39,13 +39,13 @@ export default function RegularNavbar({ showSearchBox = false }) {
   const bgColor = isSticky ? "bg-white/80 dark:bg-gray-800/80" : "bg-transparent";
   const shadow = isSticky ? "shadow-md dark:shadow-gray-900" : "";
 
-  const notifications = [
-    { id: 1, text: "Your order #12345 has been shipped", time: "2 hours ago", read: false },
-    { id: 2, text: "New discount available on electronics", time: "1 day ago", read: true },
-    { id: 3, text: "Your review was helpful to others", time: "3 days ago", read: true }
-  ];
+  // const notifications = [
+  //   { id: 1, text: "Your order #12345 has been shipped", time: "2 hours ago", read: false },
+  //   { id: 2, text: "New discount available on electronics", time: "1 day ago", read: true },
+  //   { id: 3, text: "Your review was helpful to others", time: "3 days ago", read: true }
+  // ];
 
-  const unreadCount = notifications.filter(n => !n.read).length;
+  //const unreadCount = notifications.filter(n => !n.read).length;
 
   return (
     <nav className={`${bgColor} ${shadow} backdrop-blur-lg fixed top-0 w-full z-50 transition-colors duration-300`}>
@@ -96,7 +96,7 @@ export default function RegularNavbar({ showSearchBox = false }) {
             </button>
 
             {/* Notification dropdown */}
-            {session && (
+            {/* {session && (
               <Menu as="div" className="relative">
                 <MenuButton className={`flex flex-col items-center ${textColor} ${hoverColor} transition`}>
                   <div className="relative">
@@ -173,7 +173,7 @@ export default function RegularNavbar({ showSearchBox = false }) {
                   </MenuItems>
                 </Transition>
               </Menu>
-            )}
+            )} */}
 
             {/* Cart */}
             <div className="relative">
@@ -244,26 +244,29 @@ export default function RegularNavbar({ showSearchBox = false }) {
                       )}
                       <MenuItem>
                         {({ focus }) => (
-                          <a
-                            href="/profile"
-                            className={`flex items-center px-4 py-2 text-gray-700 dark:text-gray-300 ${focus ? 'bg-gray-100 dark:bg-gray-700' : ''
-                              } transition-colors duration-200`}
+                          <button
+                            disabled
+                            className={`flex items-center px-4 py-2 text-gray-700 dark:text-gray-300 transition-colors duration-200
+        ${focus ? 'bg-gray-100 dark:bg-gray-700' : ''} disabled:cursor-not-allowed opacity-60`}
                           >
                             <FiTruck aria-hidden className="mr-2" /> Track Orders
-                          </a>
+                          </button>
                         )}
                       </MenuItem>
+
                       <MenuItem>
                         {({ focus }) => (
-                          <a
-                            href="/profile"
-                            className={`flex items-center px-4 py-2 text-gray-700 dark:text-gray-300 ${focus ? 'bg-gray-100 dark:bg-gray-700' : ''
-                              } transition-colors duration-200`}
+                          <button
+                            disabled
+                            className={`flex items-center px-4 py-2 text-gray-700 dark:text-gray-300 transition-colors duration-200
+        ${focus ? 'bg-gray-100 dark:bg-gray-700' : ''}
+        disabled:cursor-not-allowed disabled:opacity-60`}
                           >
                             <PiGearSix aria-hidden className="mr-2" /> Settings
-                          </a>
+                          </button>
                         )}
                       </MenuItem>
+
                       <MenuItem>
                         {({ focus }) => (
                           <a
@@ -316,14 +319,14 @@ export default function RegularNavbar({ showSearchBox = false }) {
               {isDarkMode ? <FaSun aria-hidden size={20} /> : <FaMoon aria-hidden size={20} />}
             </button>
 
-            <a href="/notifications" aria-label="View Notifications" className={`relative ${iconColor} ${hoverColor} transition`}>
+            {/* <a href="/notifications" aria-label="View Notifications" className={`relative ${iconColor} ${hoverColor} transition`}>
               <FaBell aria-hidden size={20} />
               {unreadCount > 0 && (
                 <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full h-4 w-4 flex items-center justify-center">
                   {unreadCount}
                 </span>
               )}
-            </a>
+            </a> */}
 
             {/* Mobile menu */}
             <Menu as="div" className="relative">
@@ -371,7 +374,7 @@ export default function RegularNavbar({ showSearchBox = false }) {
                         </a>
                       )}
                     </MenuItem>
-                    <MenuItem>
+                    {/* <MenuItem>
                       {({ focus }) => (
                         <a
                           href="/cart"
@@ -381,7 +384,7 @@ export default function RegularNavbar({ showSearchBox = false }) {
                           <FiTruck /> <p>Track Orders</p>
                         </a>
                       )}
-                    </MenuItem>
+                    </MenuItem> */}
                   </div>
 
                   <div className="py-1">
@@ -423,7 +426,7 @@ export default function RegularNavbar({ showSearchBox = false }) {
                             )}
                           </MenuItem>
                         )}
-                        <MenuItem>
+                        {/* <MenuItem>
                           {({ focus }) => (
                             <a
                               href="/profile"
@@ -433,7 +436,7 @@ export default function RegularNavbar({ showSearchBox = false }) {
                               <PiGearSix /> <p>Settings</p>
                             </a>
                           )}
-                        </MenuItem>
+                        </MenuItem> */}
                         <MenuItem>
                           {({ focus }) => (
                             <a

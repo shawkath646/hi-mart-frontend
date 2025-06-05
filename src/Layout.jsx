@@ -1,9 +1,9 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useLocation, useNavigate, Outlet } from "react-router";
 import { useAuth } from "./contexts/useAuth";
 import { ToastContainer } from "react-toastify";
 import axios from "axios";
-
+import { MotionConfig } from "framer-motion";
 import RegularNavbar from "./components/navigation/RegularNavbar";
 import DashboardNavbar from "./components/navigation/DashboardNavbar";
 import RegularFooter from "./components/navigation/RegularFooter";
@@ -15,69 +15,67 @@ export default function Layout() {
   const { pathname } = useLocation();
   const navigate = useNavigate();
   const { session, loading } = useAuth();
-
   const [backendDown, setBackendDown] = useState(false);
 
-  const regularRoute = ["/", "/products", "/category", "/about-us"];
-  const isRegularRoute = regularRoute.some((route) =>
-    pathname.startsWith(route)
-  );
-  const isSellerRoute = pathname.startsWith("/seller");
-  const isAuthRoute = pathname.startsWith("/auth");
-  const showFooter = !isAuthRoute && (isRegularRoute || isSellerRoute);
+  const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || "http://localhost:5000";
 
-  // Ping backend once on mount
+  const isRegularRoute = useMemo(() =>
+    ["/", "/products", "/category", "/about-us"].some(route => pathname.startsWith(route)),
+    [pathname]
+  );
+
+  const isSellerRoute = useMemo(() => pathname.startsWith("/seller"), [pathname]);
+  const isAuthRoute = useMemo(() => pathname.startsWith("/auth"), [pathname]);
+  const showFooter = useMemo(() => !isAuthRoute && (isRegularRoute || isSellerRoute), [isAuthRoute, isRegularRoute, isSellerRoute]);
+
+  // Ping backend on mount
   useEffect(() => {
     const pingBackend = async () => {
       try {
-        await axios.get(import.meta.env.VITE_BACKEND_URL || "http://localhost:5000");
+        await axios.get(BACKEND_URL);
         setBackendDown(false);
       } catch (err) {
         console.error("Backend connection failed:", err.message);
         setBackendDown(true);
       }
     };
-
     pingBackend();
-  }, []);
+  }, [BACKEND_URL]);
 
-  // Protected route logic
+  // Route protection logic
   useEffect(() => {
     if (loading || backendDown) return;
 
     const protectedRoutes = ["/profile", "/auth/logout"];
     const sellerOnlyRoutes = ["/seller"];
 
-    const isProtected =
+    const isProtectedRoute =
       protectedRoutes.includes(pathname) ||
-      sellerOnlyRoutes.some((route) => pathname.startsWith(route));
+      sellerOnlyRoutes.some(route => pathname.startsWith(route));
 
-    const needsSeller =
-      sellerOnlyRoutes.some((route) => pathname.startsWith(route));
+    const requiresSeller =
+      sellerOnlyRoutes.some(route => pathname.startsWith(route));
 
-    const notAllowed =
-      !session || (needsSeller && !session.user?.isSeller);
+    const userNotAllowed =
+      !session || (requiresSeller && !session.user?.isSeller);
 
-    if (isProtected && notAllowed) {
+    if (isProtectedRoute && userNotAllowed) {
       navigate("/unauthorized", { replace: true });
     }
   }, [pathname, session, loading, backendDown, navigate]);
 
-  if (backendDown) {
-    return <ConnectionErrorPage />;
-  }
-
-  if (loading) {
-    return <LoadingPage />;
-  }
+  if (backendDown) return <ConnectionErrorPage />;
+  if (loading) return <LoadingPage />;
 
   return (
-    <>
+    <MotionConfig
+      reducedMotion="always"
+      transition={{ duration: 0 }}
+    >
       {isRegularRoute && <RegularNavbar />}
       {isSellerRoute && <DashboardNavbar />}
       <Outlet />
       {showFooter && <RegularFooter />}
-
       <ToastContainer
         position="top-center"
         autoClose={5000}
@@ -90,6 +88,6 @@ export default function Layout() {
         stacked
         newestOnTop
       />
-    </>
+    </MotionConfig>
   );
 }
