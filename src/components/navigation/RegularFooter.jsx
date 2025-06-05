@@ -26,10 +26,10 @@ const RegularFooter = () => {
             </p>
             <div className="social-links flex gap-4">
               {[
-                <FaFacebookF />,
-                <FaTwitter />,
-                <FaInstagram />,
-                <FaPinterest />
+                <FaFacebookF aria-hidden />,
+                <FaTwitter aria-hidden />,
+                <FaInstagram aria-hidden />,
+                <FaPinterest aria-hidden />
               ].map((icon, index) => (
                 <a
                   key={index}
@@ -93,19 +93,19 @@ const RegularFooter = () => {
             </h3>
             <ul className="space-y-3 text-gray-600 dark:text-gray-400">
               <li className="flex items-start gap-3">
-                <FaMapMarkerAlt className="mt-1 text-blue-500" />
+                <FaMapMarkerAlt aria-hidden className="mt-1 text-blue-500" />
                 <span>123 Main St, City, Country</span>
               </li>
               <li className="flex items-center gap-3">
-                <FaPhone className="text-blue-500" />
+                <FaPhone aria-hidden className="text-blue-500" />
                 <span>+1 234 567 890</span>
               </li>
               <li className="flex items-center gap-3">
-                <FaEnvelope className="text-blue-500" />
+                <FaEnvelope aria-hidden className="text-blue-500" />
                 <span>info@HiMart.com</span>
               </li>
               <li className="flex items-center gap-3">
-                <FaClock className="text-blue-500" />
+                <FaClock aria-hidden className="text-blue-500" />
                 <span>Mon-Fri: 9AM - 6PM</span>
               </li>
             </ul>

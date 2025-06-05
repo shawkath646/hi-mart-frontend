@@ -1,8 +1,8 @@
 import { useState, useEffect, Fragment } from "react";
 import { Menu, MenuButton, MenuItems, MenuItem, Transition } from "@headlessui/react";
-import useDarkMode from "../../libs/useDarkMode";
-import { useAuth } from "../../libs/useAuth";
-import { useCart } from "../../libs/useCartContext";
+import useDarkMode from "@/hooks/useDarkMode";
+import { useAuth } from "@/contexts/useAuth";
+import { useCart } from "@/contexts/useCart";
 import {
   FaShoppingCart,
   FaSearch,
@@ -74,7 +74,7 @@ export default function RegularNavbar({ showSearchBox = false }) {
                     : "text-white dark:text-gray-300 hover:text-blue-200 dark:hover:text-blue-400"
                     }`}
                 >
-                  <FaSearch />
+                  <FaSearch aria-hidden />
                 </button>
               </div>
             </div>
@@ -88,9 +88,9 @@ export default function RegularNavbar({ showSearchBox = false }) {
               aria-label={isDarkMode ? "Switch to light mode" : "Switch to dark mode"}
             >
               {isDarkMode ? (
-                <FaSun className={`mb-1 ${iconColor}`} />
+                <FaSun aria-hidden className={`mb-1 ${iconColor}`} />
               ) : (
-                <FaMoon className={`mb-1 ${iconColor}`} />
+                <FaMoon aria-hidden className={`mb-1 ${iconColor}`} />
               )}
               <span className="text-xs">{isDarkMode ? "Light" : "Dark"}</span>
             </button>
@@ -100,7 +100,7 @@ export default function RegularNavbar({ showSearchBox = false }) {
               <Menu as="div" className="relative">
                 <MenuButton className={`flex flex-col items-center ${textColor} ${hoverColor} transition`}>
                   <div className="relative">
-                    <FaBell className={`mb-1 ${iconColor}`} />
+                    <FaBell aria-hidden className={`mb-1 ${iconColor}`} />
                     {unreadCount > 0 && (
                       <span className="absolute -top-2.5 -right-2.5 bg-red-500 text-white text-xs rounded-full h-4 w-4 flex items-center justify-center">
                         {unreadCount}
@@ -177,8 +177,8 @@ export default function RegularNavbar({ showSearchBox = false }) {
 
             {/* Cart */}
             <div className="relative">
-              <a href="/cart" className={`flex flex-col items-center ${textColor} ${hoverColor} transition`}>
-                <FaShoppingCart className={`mb-1 ${iconColor}`} />
+              <a href="/cart" aria-label="View Cart Items" className={`flex flex-col items-center ${textColor} ${hoverColor} transition`}>
+                <FaShoppingCart aria-hidden className={`mb-1 ${iconColor}`} />
                 <span className="text-xs">Cart</span>
                 {cartCount > 0 && (
                   <span className="absolute -top-2.5 -right-2.5 bg-red-500 text-white text-xs rounded-full h-4 w-4 flex items-center justify-center">
@@ -191,7 +191,7 @@ export default function RegularNavbar({ showSearchBox = false }) {
             {/* Account dropdown */}
             <Menu as="div" className="relative">
               <MenuButton className={`flex flex-col items-center ${textColor} ${hoverColor} transition`}>
-                <FaUser className={`mb-1 ${iconColor}`} />
+                <FaUser aria-hidden className={`mb-1 ${iconColor}`} />
                 <span className="text-xs">Account</span>
               </MenuButton>
               <Transition
@@ -213,7 +213,7 @@ export default function RegularNavbar({ showSearchBox = false }) {
                             className={`flex items-center px-4 py-2 text-gray-700 dark:text-gray-300 ${focus ? 'bg-gray-100 dark:bg-gray-700' : ''
                               } transition-colors duration-200`}
                           >
-                            <FiUser className="mr-2" /> Profile
+                            <FiUser aria-hidden className="mr-2" /> Profile
                           </a>
                         )}
                       </MenuItem>
@@ -225,7 +225,7 @@ export default function RegularNavbar({ showSearchBox = false }) {
                               className={`flex items-center px-4 py-2 text-gray-700 dark:text-gray-300 ${focus ? 'bg-gray-100 dark:bg-gray-700' : ''
                                 } transition-colors duration-200`}
                             >
-                              <MdDashboard className="mr-2" /> Dashboard
+                              <MdDashboard aria-hidden className="mr-2" /> Dashboard
                             </a>
                           )}
                         </MenuItem>
@@ -237,7 +237,7 @@ export default function RegularNavbar({ showSearchBox = false }) {
                               className={`flex items-center px-4 py-2 text-gray-700 dark:text-gray-300 ${focus ? 'bg-gray-100 dark:bg-gray-700' : ''
                                 } transition-colors duration-200`}
                             >
-                              <MdDashboard className="mr-2" /> Become a Seller
+                              <MdDashboard aria-hidden className="mr-2" /> Become a Seller
                             </a>
                           )}
                         </MenuItem>
@@ -249,7 +249,7 @@ export default function RegularNavbar({ showSearchBox = false }) {
                             className={`flex items-center px-4 py-2 text-gray-700 dark:text-gray-300 ${focus ? 'bg-gray-100 dark:bg-gray-700' : ''
                               } transition-colors duration-200`}
                           >
-                            <FiTruck className="mr-2" /> Track Orders
+                            <FiTruck aria-hidden className="mr-2" /> Track Orders
                           </a>
                         )}
                       </MenuItem>
@@ -260,18 +260,18 @@ export default function RegularNavbar({ showSearchBox = false }) {
                             className={`flex items-center px-4 py-2 text-gray-700 dark:text-gray-300 ${focus ? 'bg-gray-100 dark:bg-gray-700' : ''
                               } transition-colors duration-200`}
                           >
-                            <PiGearSix className="mr-2" /> Settings
+                            <PiGearSix aria-hidden className="mr-2" /> Settings
                           </a>
                         )}
                       </MenuItem>
                       <MenuItem>
                         {({ focus }) => (
                           <a
-                            href="/logout"
+                            href="/auth/logout"
                             className={`flex items-center px-4 py-2 text-gray-700 dark:text-gray-300 ${focus ? 'bg-gray-100 dark:bg-gray-700' : ''
                               } transition-colors duration-200`}
                           >
-                            <FiLogOut className="mr-2" /> Log Out
+                            <FiLogOut aria-hidden className="mr-2" /> Log Out
                           </a>
                         )}
                       </MenuItem>
@@ -281,22 +281,22 @@ export default function RegularNavbar({ showSearchBox = false }) {
                       <MenuItem>
                         {({ focus }) => (
                           <a
-                            href="/signin"
+                            href="/auth/signin"
                             className={`flex items-center px-4 py-2 text-gray-700 dark:text-gray-300 ${focus ? 'bg-gray-100 dark:bg-gray-700' : ''
                               } transition-colors duration-200`}
                           >
-                            <FiLogIn className="mr-2" /> Sign In
+                            <FiLogIn aria-hidden className="mr-2" /> Sign In
                           </a>
                         )}
                       </MenuItem>
                       <MenuItem>
                         {({ focus }) => (
                           <a
-                            href="/signup"
+                            href="/auth/signup"
                             className={`flex items-center px-4 py-2 text-gray-700 dark:text-gray-300 ${focus ? 'bg-gray-100 dark:bg-gray-700' : ''
                               } transition-colors duration-200`}
                           >
-                            <FiUserPlus className="mr-2" /> Sign Up
+                            <FiUserPlus aria-hidden className="mr-2" /> Sign Up
                           </a>
                         )}
                       </MenuItem>
@@ -313,11 +313,11 @@ export default function RegularNavbar({ showSearchBox = false }) {
               className={`${iconColor} ${hoverColor} transition`}
               aria-label={isDarkMode ? "Switch to light mode" : "Switch to dark mode"}
             >
-              {isDarkMode ? <FaSun size={20} /> : <FaMoon size={20} />}
+              {isDarkMode ? <FaSun aria-hidden size={20} /> : <FaMoon aria-hidden size={20} />}
             </button>
 
-            <a href="/notifications" className={`relative ${iconColor} ${hoverColor} transition`}>
-              <FaBell size={20} />
+            <a href="/notifications" aria-label="View Notifications" className={`relative ${iconColor} ${hoverColor} transition`}>
+              <FaBell aria-hidden size={20} />
               {unreadCount > 0 && (
                 <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full h-4 w-4 flex items-center justify-center">
                   {unreadCount}
@@ -348,7 +348,7 @@ export default function RegularNavbar({ showSearchBox = false }) {
                           placeholder="Search..."
                           className="w-full py-2 px-3 border border-gray-300 dark:border-gray-600 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-300"
                         />
-                        <FaSearch className="absolute right-3 top-2.5 text-gray-400 dark:text-gray-500" />
+                        <FaSearch aria-hidden className="absolute right-3 top-2.5 text-gray-400 dark:text-gray-500" />
                       </div>
                     </div>
                   )}
@@ -358,10 +358,11 @@ export default function RegularNavbar({ showSearchBox = false }) {
                       {({ focus }) => (
                         <a
                           href="/cart"
+                          aria-label="View Cart Items"
                           className={`flex items-center px-4 py-2 ${focus ? 'bg-gray-100 dark:bg-gray-700' : ''
                             } transition-colors duration-200 text-gray-700 dark:text-gray-300 space-x-2`}
                         >
-                          <FaShoppingCart /> <p>Cart</p>
+                          <FaShoppingCart aria-hidden /> <p>Cart</p>
                           {cartCount > 0 && (
                             <span className="ml-auto bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
                               {cartCount}
@@ -450,7 +451,7 @@ export default function RegularNavbar({ showSearchBox = false }) {
                         <MenuItem>
                           {({ focus }) => (
                             <a
-                              href="/signin"
+                              href="/auth/signin"
                               className={`flex items-center px-4 py-2 ${focus ? 'bg-gray-100 dark:bg-gray-700' : ''
                                 } transition-colors duration-200 text-gray-700 dark:text-gray-300 space-x-2`}
                             >
@@ -461,7 +462,7 @@ export default function RegularNavbar({ showSearchBox = false }) {
                         <MenuItem>
                           {({ focus }) => (
                             <a
-                              href="/signup"
+                              href="/auth/signup"
                               className={`flex items-center px-4 py-2 ${focus ? 'bg-gray-100 dark:bg-gray-700' : ''
                                 } transition-colors duration-200 text-gray-700 dark:text-gray-300 space-x-2`}
                             >

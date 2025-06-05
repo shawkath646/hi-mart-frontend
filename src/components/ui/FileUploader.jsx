@@ -16,8 +16,8 @@ const getFileIcon = (type) => {
     type === "application/zip" ||
     type === "application/x-zip-compressed"
   )
-    return <AiOutlineFileZip size={40} />;
-  return <FiFile size={40} />;
+    return <AiOutlineFileZip aria-hidden size={40} />;
+  return <FiFile aria-hidden size={40} />;
 };
 
 const FileUploader = ({ value, onChange, accept, label }) => {

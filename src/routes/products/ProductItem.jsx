@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import categories from "../../data/categories";
+import categories from "@/data/categories";
 import { FaStar } from "react-icons/fa";
 
 export default function ProductItem({ product }) {
@@ -55,6 +55,7 @@ export default function ProductItem({ product }) {
         {[...Array(5)].map((_, i) => (
           <FaStar
             key={i}
+            aria-hidden
             className={`w-4 h-4 ${
               i < Math.floor(product.rating)
                 ? "text-yellow-400"

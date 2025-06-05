@@ -4,7 +4,7 @@ import { Menu, MenuItems, MenuItem, Transition } from '@headlessui/react';
 import {
     FiDollarSign, FiPackage, FiUsers,
     FiShoppingCart, FiChevronDown, FiPlus,
-    FiEdit, FiList, FiArrowRight
+    FiEdit, FiList
 } from 'react-icons/fi';
 import { FaBoxOpen } from 'react-icons/fa';
 import { Bar } from 'react-chartjs-2';
@@ -27,7 +27,7 @@ ChartJS.register(
     Legend
 );
 
-const SellerDashboard = () => {
+const SellerDashboardPage = () => {
 
     const stats = [
         { title: "Total Revenue", value: "$12,345", change: "+12%", icon: <FiDollarSign size={24} />, color: "bg-green-100 text-green-600" },
@@ -197,7 +197,7 @@ const SellerDashboard = () => {
                             <div key={index} className="flex justify-between items-center">
                                 <div className="flex items-center">
                                     <div className="w-8 h-8 rounded bg-blue-100 flex items-center justify-center text-blue-600 mr-3">
-                                        <FaBoxOpen size={14} />
+                                        <FaBoxOpen aria-hidden size={14} />
                                     </div>
                                     <span className="text-sm font-medium">{product.name}</span>
                                 </div>
@@ -313,4 +313,4 @@ const SellerDashboard = () => {
     );
 };
 
-export default SellerDashboard;
+export default SellerDashboardPage;

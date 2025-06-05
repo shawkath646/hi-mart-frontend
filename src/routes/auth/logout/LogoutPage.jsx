@@ -1,7 +1,8 @@
 import { useState, useMemo, useCallback } from 'react';
 import { useLocation } from 'react-router';
+import { Helmet } from '@dr.pogodin/react-helmet';
 import { toast } from 'react-toastify';
-import { useAuth } from '../libs/useAuth';
+import { useAuth } from '@/contexts/useAuth';
 import { FiLogOut, FiUser, FiMail, FiKey } from 'react-icons/fi';
 
 const LogoutPage = () => {
@@ -36,11 +37,16 @@ const LogoutPage = () => {
     }
 
     return (
-        <div className="min-h-screen flex items-center justify-center p-4 bg-gray-50 dark:bg-gray-900 transition-colors duration-300">
-            <div className="w-full max-w-md p-8 rounded-lg shadow-lg bg-white dark:bg-gray-800 text-gray-800 dark:text-white transition-all duration-300">
-                <UserSession session={session} isLoggingOut={isLoggingOut} handleLogout={handleLogout} />
-            </div>
-        </div>
+        <>
+        <Helmet>
+            <title>Logout | HiMart</title>
+        </Helmet>
+            <main className="min-h-screen flex items-center justify-center p-4 bg-gray-50 dark:bg-gray-900 transition-colors duration-300">
+                <div className="w-full max-w-md p-8 rounded-lg shadow-lg bg-white dark:bg-gray-800 text-gray-800 dark:text-white transition-all duration-300">
+                    <UserSession session={session} isLoggingOut={isLoggingOut} handleLogout={handleLogout} />
+                </div>
+            </main>
+        </>
     );
 };
 

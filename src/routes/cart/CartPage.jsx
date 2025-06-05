@@ -1,10 +1,14 @@
 import { useState, useEffect, useCallback } from 'react';
+import { Helmet } from '@dr.pogodin/react-helmet';
 import { motion, AnimatePresence } from "framer-motion";
 import axios from "axios";
 import { toast } from "react-toastify";
+import CartSkeletionAnimation from "./CartSkeletionAnimation";
 import { FaTrash, FaArrowLeft, FaTag } from "react-icons/fa";
 
+
 const CartPage = () => {
+    const [isLoading, setIsLoading] = useState(true);
     const [cartItems, setCartItems] = useState([]);
 
     const fetchCart = useCallback(async () => {
@@ -53,6 +57,8 @@ const CartPage = () => {
             const errorMessage =
                 error.response?.data?.error || error.message || "Failed to fetch cart items";
             toast.error(errorMessage);
+        } finally {
+            setIsLoading(false);
         }
     }, []);
 
@@ -223,6 +229,10 @@ const CartPage = () => {
     };
 
     return (
+        <>
+        <Helmet>
+            <title>Cart | HiMart</title>
+        </Helmet>
         <motion.main
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -243,7 +253,7 @@ const CartPage = () => {
                 </motion.div>
 
                 <AnimatePresence>
-                    {cartItems.length === 0 ? (
+                    {isLoading ?  <CartSkeletionAnimation /> : (cartItems.length === 0 ? (
                         <motion.div
                             key="empty-cart"
                             initial={{ opacity: 0, scale: 0.9 }}
@@ -278,7 +288,7 @@ const CartPage = () => {
                                     whileTap={{ scale: 0.97 }}
                                     className="px-6 py-2 text-center bg-blue-600 hover:bg-blue-700 text-white rounded-md transition flex items-center mx-auto"
                                 >
-                                    <FaArrowLeft className="mr-2" />
+                                    <FaArrowLeft aria-hidden className="mr-2" />
                                     Continue Shopping
                                 </motion.a>
                             </div>
@@ -343,7 +353,7 @@ const CartPage = () => {
                                                                 onClick={() => removeItem(item.id)}
                                                                 className="flex items-center text-xs text-red-600 hover:text-red-800 dark:text-red-400 dark:hover:text-red-300 mt-1"
                                                             >
-                                                                <FaTrash className="mr-1" />
+                                                                <FaTrash aria-hidden className="mr-1" />
                                                                 Remove
                                                             </motion.button>
                                                         </div>
@@ -414,7 +424,7 @@ const CartPage = () => {
                                         whileTap={{ scale: 0.97 }}
                                         className="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md hover:bg-gray-100 dark:hover:bg-gray-700 transition flex items-center"
                                     >
-                                        <FaArrowLeft className="mr-2" />
+                                        <FaArrowLeft aria-hidden className="mr-2" />
                                         Continue Shopping
                                     </motion.a>
                                     <motion.button
@@ -423,7 +433,7 @@ const CartPage = () => {
                                         onClick={() => setCartItems([])}
                                         className="px-4 py-2 text-red-600 dark:text-red-400 hover:text-red-800 dark:hover:text-red-300 transition flex items-center"
                                     >
-                                        <FaTrash className="mr-2" />
+                                        <FaTrash aria-hidden className="mr-2" />
                                         Clear Cart
                                     </motion.button>
                                 </div>
@@ -471,7 +481,7 @@ const CartPage = () => {
                                         className="mb-6"
                                     >
                                         <div className="flex items-center mb-2">
-                                            <FaTag className="text-gray-500 dark:text-gray-400 mr-2" />
+                                            <FaTag aria-hidden className="text-gray-500 dark:text-gray-400 mr-2" />
                                             <h3 className="font-medium">Promo Code</h3>
                                         </div>
                                         <div className="flex">
@@ -560,10 +570,11 @@ const CartPage = () => {
                                 </motion.div>
                             </motion.div>
                         </motion.div>
-                    )}
+                    ))}
                 </AnimatePresence>
             </div>
         </motion.main>
+        </>
     );
 };
 

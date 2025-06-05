@@ -1,9 +1,10 @@
 import { Fragment } from 'react';
 import { Menu, MenuButton, MenuItems, MenuItem, Transition } from '@headlessui/react';
-import { useSellerAuth } from '../../libs/useSellerAuth';
+import { useSellerAuth } from '@/contexts/useSellerAuth';
 import {
-    FiBell, FiCalendar,
-    FiMessageSquare,FiChevronDown
+    FiBell,
+    FiMessageSquare,
+    FiChevronDown
 } from 'react-icons/fi';
 import { FaRegSmile } from 'react-icons/fa';
 
@@ -18,16 +19,13 @@ export default function DashboardNavbar() {
         <nav className="fixed top-0 left-0 w-full flex items-center justify-between bg-white shadow-sm p-4 z-50">
             <h1 className="text-2xl font-bold text-gray-800">Dashboard Overview</h1>
             <div className="flex items-center space-x-4">
-                <button className="p-2 text-gray-600 hover:bg-gray-100 rounded-full">
-                    <FiCalendar size={20} />
-                </button>
-                <button className="p-2 text-gray-600 hover:bg-gray-100 rounded-full">
-                    <FiMessageSquare size={20} />
+                <button aria-label="View Messages" className="p-2 text-gray-600 hover:bg-gray-100 rounded-full">
+                    <FiMessageSquare aria-hidden size={20} />
                 </button>
 
                 <Menu as="div" className="relative">
-                    <MenuButton className="p-2 text-gray-600 hover:bg-gray-100 rounded-full relative">
-                        <FiBell size={20} />
+                    <MenuButton aria-label="View Notifications" className="p-2 text-gray-600 hover:bg-gray-100 rounded-full relative">
+                        <FiBell aria-hidden size={20} />
                         <span className="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full"></span>
                     </MenuButton>
                     <Transition
@@ -65,10 +63,10 @@ export default function DashboardNavbar() {
                 <Menu as="div" className="relative">
                     <MenuButton className="flex items-center space-x-2 focus:outline-none">
                         <div className="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center text-blue-600">
-                            <FaRegSmile size={16} />
+                            <FaRegSmile aria-hidden size={16} />
                         </div>
                         <span className="text-sm font-medium">{sellerSession.businessName}</span>
-                        <FiChevronDown className="text-gray-500" />
+                        <FiChevronDown aria-hidden className="text-gray-500" />
                     </MenuButton>
                     <Transition
                         as={Fragment}

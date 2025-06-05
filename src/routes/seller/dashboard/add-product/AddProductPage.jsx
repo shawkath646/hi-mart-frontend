@@ -4,10 +4,10 @@ import { useForm, Controller } from "react-hook-form";
 import axios from "axios";
 import { motion } from "framer-motion";
 import { toast } from "react-toastify";
-import PriceInput from "../components/ui/PriceInput";
-import FileUploader from "../components/ui/FileUploader";
-import { staggerContainer, fadeIn } from "../libs/motion";
-import categories from "../data/categories";
+import PriceInput from "../../../../components/ui/PriceInput";
+import FileUploader from "../../../../components/ui/FileUploader";
+import { staggerContainer, fadeIn } from "../../../../libs/motion";
+import categories from "../../../../data/categories";
 import { FaPlus, FaTag } from "react-icons/fa";
 
 
@@ -82,7 +82,7 @@ export default function AddProductPage() {
           className="text-center mb-14 mt-8"
         >
           <div className="flex items-center justify-center mb-2 gap-4">
-            <FaPlus className="text-blue-500 dark:text-blue-400 text-4xl" />
+            <FaPlus aria-hidden className="text-blue-500 dark:text-blue-400 text-4xl" />
             <h1 className="text-xl lg:text-3xl font-bold text-gray-900 dark:text-white tracking-tight">
               Add New Product
             </h1>
@@ -260,9 +260,10 @@ export default function AddProductPage() {
                           type="button"
                           onClick={addKeyword}
                           disabled={value.length >= 10}
+                          aria-label="Add keyword"
                           className="px-3 py-2.5 bg-blue-600 hover:bg-blue-700 dark:bg-blue-700 dark:hover:bg-blue-800 text-white rounded-r-lg transition-colors disabled:opacity-50"
                         >
-                          <FaPlus />
+                          <FaPlus aria-hidden />
                         </button>
                       </div>
 
@@ -276,7 +277,7 @@ export default function AddProductPage() {
                             key={index}
                             className="inline-flex items-center text-xs px-2 py-1 rounded-full bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200"
                           >
-                            <FaTag className="mr-1" size={10} />
+                            <FaTag aria-hidden className="mr-1" size={10} />
                             {keyword}
                             <button
                               type="button"

@@ -1,33 +1,51 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useLocation, useNavigate, Outlet } from "react-router";
-import { useAuth } from "../libs/useAuth";
+import { useAuth } from "./contexts/useAuth";
 import { ToastContainer } from "react-toastify";
-import RegularNavbar from "./navigation/RegularNavbar";
-import DashboardNavbar from "./navigation/DashboardNavbar";
-import RegularFooter from "./navigation/RegularFooter";
-import 'react-toastify/dist/ReactToastify.css';
+import axios from "axios";
 
+import RegularNavbar from "./components/navigation/RegularNavbar";
+import DashboardNavbar from "./components/navigation/DashboardNavbar";
+import RegularFooter from "./components/navigation/RegularFooter";
+import LoadingPage from "./routes/fallbacks/LoadingPage";
+import ConnectionErrorPage from "./routes/fallbacks/ConnectionErrorPage";
+import 'react-toastify/dist/ReactToastify.css';
 
 export default function Layout() {
   const { pathname } = useLocation();
   const navigate = useNavigate();
   const { session, loading } = useAuth();
 
+  const [backendDown, setBackendDown] = useState(false);
+
   const regularRoute = ["/", "/products", "/category", "/about-us"];
   const isRegularRoute = regularRoute.some((route) =>
     pathname.startsWith(route)
   );
-
   const isSellerRoute = pathname.startsWith("/seller");
-  const isAuthRoute = ["/signin", "/signup"].includes(pathname);
-
+  const isAuthRoute = pathname.startsWith("/auth");
   const showFooter = !isAuthRoute && (isRegularRoute || isSellerRoute);
 
-  // Protected route logic with loading check
+  // Ping backend once on mount
   useEffect(() => {
-    if (loading) return; // Wait for session to load
+    const pingBackend = async () => {
+      try {
+        await axios.get(import.meta.env.VITE_BACKEND_URL || "http://localhost:5000");
+        setBackendDown(false);
+      } catch (err) {
+        console.error("Backend connection failed:", err.message);
+        setBackendDown(true);
+      }
+    };
 
-    const protectedRoutes = ["/profile", "/logout"];
+    pingBackend();
+  }, []);
+
+  // Protected route logic
+  useEffect(() => {
+    if (loading || backendDown) return;
+
+    const protectedRoutes = ["/profile", "/auth/logout"];
     const sellerOnlyRoutes = ["/seller"];
 
     const isProtected =
@@ -43,20 +61,23 @@ export default function Layout() {
     if (isProtected && notAllowed) {
       navigate("/unauthorized", { replace: true });
     }
-  }, [pathname, session, loading, navigate]);
+  }, [pathname, session, loading, backendDown, navigate]);
+
+  if (backendDown) {
+    return <ConnectionErrorPage />;
+  }
+
+  if (loading) {
+    return <LoadingPage />;
+  }
 
   return (
     <>
       {isRegularRoute && <RegularNavbar />}
       {isSellerRoute && <DashboardNavbar />}
-      {loading ? (
-        <div className="text-center mt-20 text-gray-500">Loading...</div>
-      ) : (
-        <>
-          <Outlet />
-          {showFooter && <RegularFooter />}
-        </>
-      )}
+      <Outlet />
+      {showFooter && <RegularFooter />}
+
       <ToastContainer
         position="top-center"
         autoClose={5000}
