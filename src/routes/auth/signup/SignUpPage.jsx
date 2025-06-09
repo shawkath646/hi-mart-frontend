@@ -36,7 +36,7 @@ export default function SignUpPage() {
 
     const onSubmit = async (data) => {
         try {
-            const baseURL = import.meta.env.VITE_API_BASE_URL || "http://localhost:5000";
+            const baseURL = import.meta.env.VITE_BACKEND_URL || "http://localhost:5000";
             await axios.post(
                 "/auth/register",
                 data,
