@@ -1,4 +1,4 @@
-import { useEffect, useState, useMemo, useCallback } from "react";
+import { useEffect, useState, useCallback } from "react";
 import axios from "axios";
 import ProductItem from "./ProductItem";
 import { IoIosArrowForward } from "react-icons/io";
@@ -13,7 +13,7 @@ function ProductSkeleton() {
   );
 }
 
-export default function ProductContainer({ label, Icon, fetchUrl }) {
+export default function ProductContainer({ Icon, label, fetchUrl }) {
   const [isLoading, setLoading] = useState(true);
   const [products, setProducts] = useState([]);
   const [error, setError] = useState(null);
@@ -38,14 +38,6 @@ export default function ProductContainer({ label, Icon, fetchUrl }) {
   useEffect(() => {
     fetchProducts();
   }, [fetchProducts]);
-
-  const renderedProducts = useMemo(() => {
-    return products.map((product) => (
-      <div key={product.id} className="snap-start flex-shrink-0 w-64">
-        <ProductItem product={product} />
-      </div>
-    ));
-  }, [products]);
 
   return (
     <section className="my-6">
@@ -76,7 +68,11 @@ export default function ProductContainer({ label, Icon, fetchUrl }) {
             </p>
           </div>
         ) : (
-          renderedProducts
+          products.map((product) => (
+            <div key={product.id} className="snap-start flex-shrink-0 w-64">
+              <ProductItem product={product} />
+            </div>
+          ))
         )}
       </div>
     </section>

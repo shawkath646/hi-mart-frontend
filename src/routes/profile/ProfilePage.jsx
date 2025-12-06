@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Navigate } from 'react-router';
-import { Helmet } from '@dr.pogodin/react-helmet';
-import { motion } from 'framer-motion';
+import { Helmet } from "@dr.pogodin/react-helmet";
+import { motion } from "framer-motion";
 import { useForm } from 'react-hook-form';
 import { useAuth } from '@/contexts/useAuth';
 import { FaUser, FaEnvelope, FaPhone, FaBirthdayCake, FaMapMarkerAlt, FaEdit, FaSave, FaTimes, FaEye, FaEyeSlash, FaGoogle } from 'react-icons/fa';
@@ -14,7 +14,7 @@ const ProfilePage = () => {
   const [editMode, setEditMode] = useState(false);
   const { session, loading } = useAuth();
 
-  const { register, handleSubmit, formState: { errors }, reset } = useForm({
+  const { handleSubmit, formState: { errors }, reset } = useForm({
     defaultValues: {
       // firstName: session.user.firstName,
       // lastName: session.user.lastName,

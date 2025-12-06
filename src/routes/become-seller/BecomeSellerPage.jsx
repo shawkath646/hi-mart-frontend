@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router';
 import { Helmet } from '@dr.pogodin/react-helmet';
-import { motion, AnimatePresence } from 'framer-motion';
+import { AnimatePresence } from 'framer-motion';
 import { useForm } from 'react-hook-form';
 import axios from 'axios';
 import { useAuth } from '@/contexts/useAuth';

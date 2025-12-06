@@ -7,7 +7,6 @@ export default function ProductItem({ product }) {
 
   return (
     <motion.article
-      key={product.id}
       whileHover={{ scale: 1.03 }}
       className="bg-white dark:bg-gray-800 p-4 rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 flex flex-col h-full"
     >

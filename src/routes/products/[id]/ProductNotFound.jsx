@@ -1,5 +1,4 @@
 import { Helmet } from "@dr.pogodin/react-helmet";
-import { motion } from "framer-motion";
 import { BiError } from "react-icons/bi";
 
 const ProductNotFound = () => (

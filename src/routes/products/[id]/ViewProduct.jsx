@@ -83,7 +83,7 @@ const ViewProductPage = () => {
 
                     localStorage.setItem("guest_cart", JSON.stringify(guestCart));
                     toast.success(`${quantity} ${product.title} saved in guest cart.`);
-                } catch (storageError) {
+                } catch {
                     toast.error("Failed to save cart locally.");
                 }
             } else {

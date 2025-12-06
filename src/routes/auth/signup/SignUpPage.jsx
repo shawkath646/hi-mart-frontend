@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router";
 import { Helmet } from "@dr.pogodin/react-helmet";
-import axios from "axios";
 import { motion } from "framer-motion";
+import axios from "axios";
 import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 import countryCodes from "@/data/countryCodes";

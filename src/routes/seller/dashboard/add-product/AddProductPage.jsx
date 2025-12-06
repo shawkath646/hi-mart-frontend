@@ -2,11 +2,9 @@ import { useMemo, useState } from "react";
 import { useNavigate } from "react-router";
 import { useForm, Controller } from "react-hook-form";
 import axios from "axios";
-import { motion } from "framer-motion";
 import { toast } from "react-toastify";
 import PriceInput from "../../../../components/ui/PriceInput";
 import FileUploader from "../../../../components/ui/FileUploader";
-import { staggerContainer, fadeIn } from "../../../../libs/motion";
 import categories from "../../../../data/categories";
 import { FaPlus, FaTag } from "react-icons/fa";
 
@@ -21,6 +19,90 @@ const PRICE_VALIDATION = {
     value: 999999.99,
     message: "Price must be less than $1,000,000"
   }
+};
+
+const KeywordsField = ({ control, errors }) => {
+  const [input, setInput] = useState("");
+
+  return (
+    <Controller
+      name="keywords"
+      control={control}
+      defaultValue={[]}
+      rules={{
+        validate: (value) => value.length <= 10 || "Maximum 10 keywords allowed",
+      }}
+      render={({ field }) => {
+        const { value, onChange } = field;
+
+        const addKeyword = () => {
+          const trimmed = input.trim();
+          if (!trimmed || value.includes(trimmed) || trimmed.length > 20 || value.length >= 10) return;
+          onChange([...value, trimmed]);
+          setInput("");
+        };
+
+        const removeKeyword = (index) => {
+          const updated = value.filter((_, i) => i !== index);
+          onChange(updated);
+        };
+
+        return (
+          <div>
+            <label htmlFor="keywords" className="block font-medium text-gray-700 dark:text-gray-300 mb-2 text-sm">
+              Keywords (Tags) {value.length > 0 && `(${value.length}/10)`}
+            </label>
+
+            <div className="flex">
+              <input
+                id="keywords"
+                type="text"
+                value={input}
+                onChange={(e) => setInput(e.target.value)}
+                onKeyDown={(e) => e.key === "Enter" && (e.preventDefault(), addKeyword())}
+                maxLength={20}
+                placeholder="Add keywords (max 20 chars each, max 10 tags)"
+                className="flex-1 px-3 py-2.5 rounded-l-lg text-sm border border-gray-300 dark:border-gray-600 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-800 dark:text-white"
+              />
+              <button
+                type="button"
+                onClick={addKeyword}
+                disabled={value.length >= 10}
+                aria-label="Add keyword"
+                className="px-3 py-2.5 bg-blue-600 hover:bg-blue-700 dark:bg-blue-700 dark:hover:bg-blue-800 text-white rounded-r-lg transition-colors disabled:opacity-50"
+              >
+                <FaPlus aria-hidden />
+              </button>
+            </div>
+
+            {errors.keywords && (
+              <p className="mt-1 text-sm text-red-600 dark:text-red-400">{errors.keywords.message}</p>
+            )}
+
+            <div className="mt-2 flex flex-wrap gap-2">
+              {value.map((keyword, index) => (
+                <span
+                  key={index}
+                  className="inline-flex items-center text-xs px-2 py-1 rounded-full bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200"
+                >
+                  <FaTag aria-hidden className="mr-1" />
+                  {keyword}
+                  <button
+                    type="button"
+                    onClick={() => removeKeyword(index)}
+                    aria-label={`Remove ${keyword}`}
+                    className="ml-1.5 text-blue-600 dark:text-blue-300 hover:text-blue-800 dark:hover:text-blue-100"
+                  >
+                    ×
+                  </button>
+                </span>
+              ))}
+            </div>
+          </div>
+        );
+      }}
+    />
+  );
 };
 
 
@@ -64,21 +146,14 @@ export default function AddProductPage() {
   };
 
   return (
-    <motion.main
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ duration: 0.5 }}
+    <main
       className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800 py-20 px-6 md:px-10 xl:px-24 transition-colors duration-300"
     >
-      <motion.div
-        variants={staggerContainer}
-        initial="hidden"
-        animate="show"
+      <div
         className="mx-auto w-full max-w-screen-xl"
       >
 
-        <motion.div
-          variants={fadeIn('up', 'tween', 0.1, 0.5)}
+        <div
           className="text-center mb-14 mt-8"
         >
           <div className="flex items-center justify-center mb-2 gap-4">
@@ -90,7 +165,7 @@ export default function AddProductPage() {
           <p className="text-gray-600 dark:text-gray-300 text-sm leading-relaxed">
             Fill in the details below to list your product in our marketplace
           </p>
-        </motion.div>
+        </div>
 
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
           {/* Product Title */}
@@ -216,85 +291,10 @@ export default function AddProductPage() {
               </div>
 
               {/* Keywords */}
-              <Controller
-                name="keywords"
-                control={control}
-                defaultValue={[]}
-                rules={{
-                  validate: (value) => value.length <= 10 || "Maximum 10 keywords allowed",
-                }}
-                render={({ field }) => {
-                  const { value, onChange } = field;
-                  const [input, setInput] = useState("");
-
-                  const addKeyword = () => {
-                    const trimmed = input.trim();
-                    if (!trimmed || value.includes(trimmed) || trimmed.length > 20 || value.length >= 10) return;
-                    onChange([...value, trimmed]);
-                    setInput("");
-                  };
-
-                  const removeKeyword = (index) => {
-                    const updated = value.filter((_, i) => i !== index);
-                    onChange(updated);
-                  };
-
-                  return (
-                    <div>
-                      <label htmlFor="keywords" className="block font-medium text-gray-700 dark:text-gray-300 mb-2 text-sm">
-                        Keywords (Tags) {value.length > 0 && `(${value.length}/10)`}
-                      </label>
-
-                      <div className="flex">
-                        <input
-                          id="keywords"
-                          type="text"
-                          value={input}
-                          onChange={(e) => setInput(e.target.value)}
-                          onKeyDown={(e) => e.key === "Enter" && (e.preventDefault(), addKeyword())}
-                          maxLength={20}
-                          placeholder="Add keywords (max 20 chars each, max 10 tags)"
-                          className="flex-1 px-3 py-2.5 rounded-l-lg text-sm border border-gray-300 dark:border-gray-600 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-800 dark:text-white"
-                        />
-                        <button
-                          type="button"
-                          onClick={addKeyword}
-                          disabled={value.length >= 10}
-                          aria-label="Add keyword"
-                          className="px-3 py-2.5 bg-blue-600 hover:bg-blue-700 dark:bg-blue-700 dark:hover:bg-blue-800 text-white rounded-r-lg transition-colors disabled:opacity-50"
-                        >
-                          <FaPlus aria-hidden />
-                        </button>
-                      </div>
-
-                      {errors.keywords && (
-                        <p className="mt-1 text-sm text-red-600 dark:text-red-400">{errors.keywords.message}</p>
-                      )}
-
-                      <div className="mt-2 flex flex-wrap gap-2">
-                        {value.map((keyword, index) => (
-                          <span
-                            key={index}
-                            className="inline-flex items-center text-xs px-2 py-1 rounded-full bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200"
-                          >
-                            <FaTag aria-hidden className="mr-1" size={10} />
-                            {keyword}
-                            <button
-                              type="button"
-                              onClick={() => removeKeyword(index)}
-                              className="ml-1 text-blue-500 dark:text-blue-300 hover:text-blue-700 dark:hover:text-blue-100"
-                            >
-                              ×
-                            </button>
-                          </span>
-                        ))}
-                      </div>
-                    </div>
-                  );
-                }}
-              />
+              <KeywordsField control={control} errors={errors} />
             </div>
 
+            <div className="space-y-8">
             {/* Price and Discount */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {/* Regular Price */}
@@ -399,25 +399,21 @@ export default function AddProductPage() {
                 )}
               </div>
             </div>
+            </div>
           </div>
 
           {/* Form Actions */}
-          <motion.div
-            variants={fadeIn('up', 'tween', 1, 0.5)}
+          <div
             className="flex flex-col sm:flex-row justify-end gap-5 pt-8"
           >
-            <motion.button
-              whileHover={{ scale: 1.03 }}
-              whileTap={{ scale: 0.98 }}
+            <button
               type="button"
               onClick={reset}
               className="px-6 py-2.5 border-2 border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-300 rounded-xl hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-all duration-300 shadow-sm"
             >
               Reset Form
-            </motion.button>
-            <motion.button
-              whileHover={{ scale: 1.03 }}
-              whileTap={{ scale: 0.98 }}
+            </button>
+            <button
               type="submit"
               disabled={isSubmitting}
               className={`px-6 py-2.5 bg-blue-600 hover:bg-blue-700 dark:bg-blue-700 dark:hover:bg-blue-800 text-white rounded-xl transition-all duration-300 shadow-lg flex items-center justify-center ${isSubmitting ? 'opacity-80' : ''}`}
@@ -433,10 +429,10 @@ export default function AddProductPage() {
               ) : (
                 'Add Product'
               )}
-            </motion.button>
-          </motion.div>
+            </button>
+          </div>
         </form>
-      </motion.div>
-    </motion.main>
+      </div>
+    </main>
   );
 }

@@ -4,8 +4,6 @@ import ProductContainer from "./ProductContainer";
 import {
   FaFire,
   FaStar,
-  FaShoppingBasket,
-  FaListUl,
   FaTshirt,
   FaFemale,
   FaMobileAlt,

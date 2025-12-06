@@ -16,7 +16,7 @@ export const SellerAuthProvider = ({ children }) => {
     try {
       const res = await api.get("/seller/session");
       setSellerSession(res.data);
-    } catch (error) {
+    } catch {
       setSellerSession(null);
     } finally {
       setSellerLoading(false);

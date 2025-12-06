@@ -3,6 +3,7 @@ import { Helmet } from '@dr.pogodin/react-helmet';
 import { motion, AnimatePresence } from "framer-motion";
 import axios from "axios";
 import { toast } from "react-toastify";
+import { useCart } from '@/contexts/useCart';
 import CartSkeletionAnimation from "./CartSkeletionAnimation";
 import { FaTrash, FaArrowLeft, FaTag } from "react-icons/fa";
 
@@ -10,6 +11,7 @@ import { FaTrash, FaArrowLeft, FaTag } from "react-icons/fa";
 const CartPage = () => {
     const [isLoading, setIsLoading] = useState(true);
     const [cartItems, setCartItems] = useState([]);
+    const { fetchCartCount } = useCart();
 
     const fetchCart = useCallback(async () => {
         try {
@@ -84,6 +86,7 @@ const CartPage = () => {
                     item.id === id ? { ...item, quantity: newQuantity } : item
                 )
             );
+            await fetchCartCount();
         } catch (error) {
             if (error.response?.status === 401) {
                 // Update localStorage guest cart quantity
@@ -120,6 +123,7 @@ const CartPage = () => {
                     );
 
                     setCartItems(detailedItems.filter(Boolean));
+                    await fetchCartCount();
                 } catch (fetchError) {
                     console.error("Failed to update guest cart items", fetchError);
                 }
@@ -131,14 +135,47 @@ const CartPage = () => {
         }
     };
 
+    const clearCart = async () => {
+        try {
+            // For authenticated users, delete all items from backend
+            const deletePromises = cartItems.map((item) =>
+                axios({
+                    method: 'delete',
+                    url: '/cart',
+                    baseURL: import.meta.env.VITE_BACKEND_URL || "http://localhost:5000",
+                    withCredentials: true,
+                    data: { productId: item.id },
+                })
+            );
+
+            await Promise.all(deletePromises);
+            setCartItems([]);
+            await fetchCartCount();
+        } catch (error) {
+            if (error.response?.status === 401) {
+                // For guest users, clear localStorage
+                localStorage.setItem("guest_cart", JSON.stringify([]));
+                setCartItems([]);
+                await fetchCartCount();
+            } else {
+                const errorMessage = error.response?.data?.error || error.message || "Failed to clear cart";
+                toast.error(errorMessage);
+            }
+        }
+    };
+
     const removeItem = async (id) => {
         try {
-            await axios.delete(`/cart/${id}`, {
+            const response = await axios({
+                method: 'delete',
+                url: '/cart',
                 baseURL: import.meta.env.VITE_BACKEND_URL || "http://localhost:5000",
                 withCredentials: true,
+                data: { productId: id },
             });
 
             setCartItems((prev) => prev.filter((item) => item.id !== id));
+            await fetchCartCount();
         } catch (error) {
             if (error.response?.status === 401) {
                 // Remove item from localStorage guest cart
@@ -173,6 +210,7 @@ const CartPage = () => {
                     );
 
                     setCartItems(detailedItems.filter(Boolean));
+                    await fetchCartCount();
                 } catch (fetchError) {
                     console.error("Failed to update guest cart items after removal", fetchError);
                 }
@@ -256,41 +294,138 @@ const CartPage = () => {
                     {isLoading ?  <CartSkeletionAnimation /> : (cartItems.length === 0 ? (
                         <motion.div
                             key="empty-cart"
-                            initial={{ opacity: 0, scale: 0.9 }}
-                            animate={{ opacity: 1, scale: 1 }}
-                            exit={{ opacity: 0, scale: 0.9 }}
-                            transition={{ duration: 0.3 }}
-                            className="text-center py-12"
+                            initial={{ opacity: 0, y: 20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            exit={{ opacity: 0, y: -20 }}
+                            transition={{ duration: 0.5 }}
+                            className="text-center py-16"
                         >
-                            <div className="max-w-md mx-auto">
-                                <div className="w-24 h-24 bg-gray-200 dark:bg-gray-700 rounded-full mx-auto mb-6 flex items-center justify-center">
-                                    <svg
-                                        className="w-12 h-12 text-gray-400"
-                                        fill="none"
-                                        stroke="currentColor"
-                                        viewBox="0 0 24 24"
-                                    >
-                                        <path
-                                            strokeLinecap="round"
-                                            strokeLinejoin="round"
-                                            strokeWidth="1.5"
-                                            d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"
-                                        ></path>
-                                    </svg>
-                                </div>
-                                <h2 className="text-2xl font-semibold mb-4">Your cart is empty</h2>
-                                <p className="mb-6 text-gray-600 dark:text-gray-300">
-                                    Looks like you haven't added anything to your cart yet
-                                </p>
-                                <motion.a
-                                    href="/products"
-                                    whileHover={{ scale: 1.03 }}
-                                    whileTap={{ scale: 0.97 }}
-                                    className="px-6 py-2 text-center bg-blue-600 hover:bg-blue-700 text-white rounded-md transition flex items-center mx-auto"
+                            <div className="max-w-lg mx-auto">
+                                {/* Animated Shopping Cart Icon */}
+                                <motion.div
+                                    initial={{ scale: 0.8, rotate: -10 }}
+                                    animate={{ scale: 1, rotate: 0 }}
+                                    transition={{
+                                        duration: 0.6,
+                                        type: "spring",
+                                        stiffness: 200,
+                                        damping: 15
+                                    }}
+                                    className="relative w-32 h-32 mx-auto mb-8"
                                 >
-                                    <FaArrowLeft aria-hidden className="mr-2" />
-                                    Continue Shopping
-                                </motion.a>
+                                    <div className="absolute inset-0 bg-gradient-to-br from-blue-100 to-purple-100 dark:from-blue-900/30 dark:to-purple-900/30 rounded-full flex items-center justify-center">
+                                        <svg
+                                            className="w-16 h-16 text-blue-500 dark:text-blue-400"
+                                            fill="none"
+                                            stroke="currentColor"
+                                            viewBox="0 0 24 24"
+                                        >
+                                            <path
+                                                strokeLinecap="round"
+                                                strokeLinejoin="round"
+                                                strokeWidth="1.5"
+                                                d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"
+                                            />
+                                        </svg>
+                                    </div>
+                                    {/* Floating particles */}
+                                    <motion.div
+                                        animate={{
+                                            y: [0, -10, 0],
+                                            opacity: [0.5, 1, 0.5]
+                                        }}
+                                        transition={{
+                                            duration: 2,
+                                            repeat: Infinity,
+                                            ease: "easeInOut"
+                                        }}
+                                        className="absolute -top-2 -right-2 w-4 h-4 bg-blue-400 dark:bg-blue-500 rounded-full blur-sm"
+                                    />
+                                    <motion.div
+                                        animate={{
+                                            y: [0, -15, 0],
+                                            opacity: [0.3, 0.8, 0.3]
+                                        }}
+                                        transition={{
+                                            duration: 2.5,
+                                            repeat: Infinity,
+                                            ease: "easeInOut",
+                                            delay: 0.5
+                                        }}
+                                        className="absolute -bottom-1 -left-3 w-3 h-3 bg-purple-400 dark:bg-purple-500 rounded-full blur-sm"
+                                    />
+                                </motion.div>
+
+                                {/* Text Content */}
+                                <motion.h2
+                                    initial={{ opacity: 0 }}
+                                    animate={{ opacity: 1 }}
+                                    transition={{ delay: 0.2, duration: 0.5 }}
+                                    className="text-3xl font-bold mb-3 bg-gradient-to-r from-gray-900 to-gray-600 dark:from-gray-100 dark:to-gray-400 bg-clip-text text-transparent"
+                                >
+                                    Your cart is empty
+                                </motion.h2>
+                                
+                                <motion.p
+                                    initial={{ opacity: 0 }}
+                                    animate={{ opacity: 1 }}
+                                    transition={{ delay: 0.3, duration: 0.5 }}
+                                    className="mb-8 text-gray-600 dark:text-gray-400 text-lg"
+                                >
+                                    Looks like you haven't added anything to your cart yet. <br />
+                                    Start exploring and add items you love!
+                                </motion.p>
+
+                                {/* Action Buttons */}
+                                <motion.div
+                                    initial={{ opacity: 0, y: 10 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    transition={{ delay: 0.4, duration: 0.5 }}
+                                    className="flex flex-col sm:flex-row gap-4 justify-center"
+                                >
+                                    <motion.a
+                                        href="/products"
+                                        whileHover={{ scale: 1.05, boxShadow: "0 10px 25px rgba(59, 130, 246, 0.3)" }}
+                                        whileTap={{ scale: 0.95 }}
+                                        className="inline-flex items-center justify-center px-8 py-3 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white font-semibold rounded-lg shadow-lg transition-all duration-200"
+                                    >
+                                        <FaArrowLeft aria-hidden className="mr-2" />
+                                        Start Shopping
+                                    </motion.a>
+                                    
+                                    <motion.a
+                                        href="/"
+                                        whileHover={{ scale: 1.05 }}
+                                        whileTap={{ scale: 0.95 }}
+                                        className="inline-flex items-center justify-center px-8 py-3 bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 text-gray-800 dark:text-gray-200 font-semibold rounded-lg shadow transition-all duration-200"
+                                    >
+                                        Go to Home
+                                    </motion.a>
+                                </motion.div>
+
+                                {/* Optional: Featured categories or suggestions */}
+                                <motion.div
+                                    initial={{ opacity: 0 }}
+                                    animate={{ opacity: 1 }}
+                                    transition={{ delay: 0.6, duration: 0.5 }}
+                                    className="mt-12 pt-8 border-t border-gray-200 dark:border-gray-700"
+                                >
+                                    <p className="text-sm text-gray-500 dark:text-gray-400 mb-4">
+                                        Popular Categories
+                                    </p>
+                                    <div className="flex flex-wrap gap-2 justify-center">
+                                        {['Electronics', 'Fashion', 'Home & Garden', 'Sports'].map((category) => (
+                                            <motion.a
+                                                key={category}
+                                                href={`/products?category=${category.toLowerCase()}`}
+                                                whileHover={{ scale: 1.05, backgroundColor: 'rgba(59, 130, 246, 0.1)' }}
+                                                className="px-4 py-2 bg-gray-50 dark:bg-gray-800 hover:bg-blue-50 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-full text-sm font-medium transition-colors"
+                                            >
+                                                {category}
+                                            </motion.a>
+                                        ))}
+                                    </div>
+                                </motion.div>
                             </div>
                         </motion.div>
                     ) : (
@@ -430,7 +565,7 @@ const CartPage = () => {
                                     <motion.button
                                         whileHover={{ x: 3 }}
                                         whileTap={{ scale: 0.97 }}
-                                        onClick={() => setCartItems([])}
+                                        onClick={clearCart}
                                         className="px-4 py-2 text-red-600 dark:text-red-400 hover:text-red-800 dark:hover:text-red-300 transition flex items-center"
                                     >
                                         <FaTrash aria-hidden className="mr-2" />

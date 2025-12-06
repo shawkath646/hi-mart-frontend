@@ -1,23 +1,15 @@
-import { motion } from 'framer-motion';
-
 const CartSkeletionAnimation = () => (
-    <motion.main
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 0.3 }}
+    <main
         className="min-h-screen py-8 px-4 sm:px-6 lg:px-8 transition-colors duration-300 dark:bg-gray-900 dark:text-gray-100 bg-gray-50 text-gray-900 pt-24"
     >
         <div className="max-w-7xl mx-auto">
             {/* Skeleton for header */}
-            <motion.div
-                initial={{ opacity: 0, y: -20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.4 }}
+            <div
                 className="mb-8"
             >
                 <div className="h-8 w-64 bg-gray-200 dark:bg-gray-700 rounded-md mb-2 animate-pulse"></div>
                 <div className="h-4 w-48 bg-gray-200 dark:bg-gray-700 rounded-md animate-pulse"></div>
-            </motion.div>
+            </div>
 
             {/* Skeleton for cart items */}
             <div className="flex flex-col lg:flex-row gap-8">
@@ -118,7 +110,7 @@ const CartSkeletionAnimation = () => (
                 </div>
             </div>
         </div>
-    </motion.main>
+    </main>
 );
 
 export default CartSkeletionAnimation;

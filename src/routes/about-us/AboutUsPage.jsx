@@ -1,44 +1,9 @@
-import { Helmet } from '@dr.pogodin/react-helmet';
-import { motion } from 'framer-motion';
-import { FiShoppingBag, FiGlobe, FiUsers, FiCode, FiAward } from 'react-icons/fi';
-import marufImage from '@/assets/maruf.jpg';
-import mahadiImage from '@/assets/mahadi.jpg';
-import mahyouImage from '@/assets/mahyou.jpg';
-import raisaImage from '@/assets/raisa.jpg';
+import { Helmet } from "@dr.pogodin/react-helmet";
+import { motion } from "framer-motion";
+import { FiShoppingBag, FiGlobe, FiUsers, FiCode, FiAward, FiArrowRight } from 'react-icons/fi';
 
 
 const AboutUsPage = () => {
-  const teamMembers = [
-    {
-      name: "MARUF SHAWKAT HOSSAIN",
-      id: "25013492",
-      role: "Full stack developer (4 year experienced)",
-      location: "Narsingdi, Bangladesh",
-      image: marufImage
-    },
-    {
-      name: "MD. MAHADI HASAN",
-      id: "25013422",
-      role: "Assistant Developer",
-      location: "Faridpur, Bangladesh",
-      image: mahadiImage
-    },
-    {
-      name: "MAHYOU SARRA",
-      id: "25040026",
-      role: "Assistant Developer",
-      location: "Lille, Hauts-de-France, France",
-      image: mahyouImage
-    },
-    {
-      name: "RAISA LEUZA AFNAN",
-      id: "25013403",
-      role: "Assistant Developer",
-      location: "Cumilla, Bangladesh",
-      image: raisaImage
-    }
-  ];
-
   return (
     <>
       <Helmet>
@@ -110,62 +75,72 @@ const AboutUsPage = () => {
             </motion.div>
           </div>
 
-          {/* Team Section */}
-          <div className="mb-20">
-            <h2 className="text-2xl font-bold text-gray-800 dark:text-white mb-3 text-center">Meet Our Team</h2>
-            <div className="w-48 h-1 bg-blue-600 dark:bg-blue-400 mx-auto mb-12"></div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-              {teamMembers.map((member, index) => (
-                <motion.div
-                  key={index}
-                  initial={{ opacity: 0, y: 50 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.5, delay: index * 0.1 }}
-                  whileHover={{ y: -10 }}
-                  className="bg-white dark:bg-gray-800 rounded-xl shadow-sm dark:shadow-md dark:shadow-gray-700 overflow-hidden transition-colors duration-300"
-                >
-                  <div className="h-48 bg-gray-200 dark:bg-gray-700 overflow-hidden">
-                    <img
-                      src={member.image}
-                      alt={member.name}
-                      className="w-full h-full object-cover"
-                    />
-                  </div>
-                  <div className="p-6">
-                    <h3 className="font-bold text-lg text-gray-800 dark:text-white">{member.name}</h3>
-                    <p className="text-sm text-gray-500 dark:text-gray-400 mb-1">ID: {member.id}</p>
-                    <p className="text-blue-600 dark:text-blue-400 font-medium mb-2">{member.role}</p>
-                    <p className="text-gray-600 dark:text-gray-300 flex items-center">
-                      <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
-                      </svg>
-                      {member.location}
-                    </p>
-                  </div>
-                </motion.div>
-              ))}
-            </div>
-          </div>
-
-          {/* Mission Section */}
+          {/* Credits Section */}
           <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.5, delay: 0.4 }}
-            className="bg-blue-500/70 dark:bg-blue-600/80 rounded-xl p-8 md:p-12 text-white transition-colors duration-300"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.6 }}
+            className="mt-16 pt-12 border-t border-gray-200 dark:border-gray-700"
           >
-            <div className="max-w-4xl mx-auto text-center">
-              <FiCode aria-hidden size={48} className="mx-auto mb-6" />
-              <h2 className="text-2xl font-bold mb-4">Our Technical Excellence</h2>
-              <p className="text-lg mb-6">
-                Built with cutting-edge technologies by our skilled development team,
-                HiMart offers a robust, secure, and scalable platform for international e-commerce.
-              </p>
-              <p>
-                We're committed to continuous improvement and innovation to deliver the best
-                shopping experience for our users worldwide.
-              </p>
+            <div className="max-w-4xl mx-auto">
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+                {/* Developer Credit */}
+                <motion.div
+                  initial={{ opacity: 0, scale: 0.95 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ duration: 0.5, delay: 0.7 }}
+                  className="flex flex-col items-start"
+                >
+                  <p className="text-sm text-gray-500 dark:text-gray-400 mb-3">Developed by</p>
+                  <motion.a
+                    href="https://shawkath646.pro"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                    className="inline-flex items-center gap-2 group"
+                  >
+                    <h3 className="text-2xl font-bold text-gray-800 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
+                      Shawkat Hossain Maruf
+                    </h3>
+                    <FiArrowRight className="text-blue-600 dark:text-blue-400 group-hover:translate-x-1 transition-transform" size={24} />
+                  </motion.a>
+                </motion.div>
+
+                {/* Powered By */}
+                <motion.div
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5, delay: 0.8 }}
+                  className="flex flex-col items-start lg:items-end"
+                >
+                  <p className="text-sm text-gray-500 dark:text-gray-400 mb-4">Powered by</p>
+                  <motion.a
+                    href="https://cloudburstlab.vercel.app"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    whileHover={{ y: -5, scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                    className="inline-flex items-center gap-3 px-6 py-4 bg-white dark:bg-gray-800 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 group"
+                  >
+                    <motion.img
+                      src="https://cloudburstlab.vercel.app/api/branding/logo?variant=transparent"
+                      alt="Cloudburst Lab"
+                      className="h-8 w-8 object-contain"
+                      whileHover={{ rotate: 360 }}
+                      transition={{ duration: 0.6 }}
+                    />
+                    <div className="text-left">
+                      <p className="text-lg font-bold text-gray-800 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
+                        Cloudburst Lab
+                      </p>
+                      <p className="text-xs text-gray-500 dark:text-gray-400">
+                        Innovation in Technology
+                      </p>
+                    </div>
+                  </motion.a>
+                </motion.div>
+              </div>
             </div>
           </motion.div>
         </div>

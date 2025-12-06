@@ -1,9 +1,9 @@
 import { useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router';
-import { Helmet } from '@dr.pogodin/react-helmet';
+import { Helmet } from "@dr.pogodin/react-helmet";
+import { motion } from "framer-motion";
 import { useForm } from 'react-hook-form';
 import axios from 'axios';
-import { motion } from 'framer-motion';
 import { toast } from 'react-toastify';
 import { useAuth } from '@/contexts/useAuth';
 import { FaGoogle, FaEye, FaEyeSlash, FaLock, FaEnvelope, FaFacebook } from 'react-icons/fa';
@@ -21,7 +21,7 @@ const SignInPage = () => {
   const [loading, setLoading] = useState(false);
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
-  const { fetchSession } = useAuth();
+  const { refreshSessionWithSync } = useAuth();
 
   const onSubmit = async (data) => {
     try {
@@ -31,7 +31,7 @@ const SignInPage = () => {
         password: data.password
       });
 
-      await fetchSession();
+      await refreshSessionWithSync();
       return navigate(searchParams.get('redirect') || "/profile");
     } catch (error) {
       const errorMessage = error.response?.data?.error || error.message || 'Login failed. Please try again.';
@@ -53,7 +53,7 @@ const SignInPage = () => {
           if (event.origin !== import.meta.env.VITE_BACKEND_URL) return;
 
           if (event.data.type === `${provider}-auth-success`) {
-            await fetchSession();
+            await refreshSessionWithSync();
             return navigate(searchParams.get('redirect') || "/profile");
           } else if (event.data.type === 'user-not-found') {
             return navigate(`/auth/signup?email=${event.data.user.email}&firstName=${event.data.user.firstName}&lastName=${event.data.user.lastName}&picture=${event.data.user.picture}`);
@@ -68,7 +68,7 @@ const SignInPage = () => {
         }
       }
     } catch (error) {
-      const errorMessage = err.response?.data?.message || error.message || `${provider} login failed. Please try again.`;
+      const errorMessage = error.response?.data?.message || error.message || `${provider} login failed. Please try again.`;
       toast.error(errorMessage);
     } finally {
       setLoading(false);
@@ -76,21 +76,19 @@ const SignInPage = () => {
   };
 
   const SocialButton = ({ provider, Icon, color }) => (
-    <motion.button
-      whileHover={!loading && !isSubmitting ? { y: -2 } : {}}
-      whileTap={!loading && !isSubmitting ? { scale: 0.98 } : {}}
+    <button
       type="button"
       onClick={() => handleSocialLogin(provider.toLowerCase())}
       disabled={loading || isSubmitting}
-      className={`flex items-center justify-center py-2 px-4 border rounded-lg shadow-sm text-sm font-medium transition-colors duration-300
+      className={`flex items-center justify-center py-2 px-4 border rounded-lg shadow-sm text-sm font-medium transition-all duration-300
         ${loading || isSubmitting
           ? "opacity-50 cursor-not-allowed bg-gray-200 dark:bg-gray-600 border-gray-300 dark:border-gray-600 text-gray-400 dark:text-gray-400"
-          : "bg-white dark:bg-gray-700 border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-600"
+          : "bg-white dark:bg-gray-700 border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-600 hover:-translate-y-0.5"
         }`}
     >
       <Icon className={`${color} mr-2`} />
       {provider}
-    </motion.button>
+    </button>
   );
 
   return (

@@ -73,16 +73,16 @@ export default function Layout() {
       <Outlet />
       {showFooter && <RegularFooter />}
       <ToastContainer
-        position="top-center"
-        autoClose={5000}
+        position="bottom-right"
+        autoClose={3000}
         hideProgressBar={false}
-        closeOnClick
-        pauseOnHover
-        draggable
-        theme="colored"
-        pauseOnFocusLoss={false}
-        stacked
         newestOnTop
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss={false}
+        draggable
+        pauseOnHover
+        theme="light"
       />
     </>
   );
